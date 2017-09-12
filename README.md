@@ -2,7 +2,9 @@
 A simple Django application to allow daily checkins and monitoring of your teams happiness.
 
 ## Requirements
+
 Create a simple Django application that:
+
 1. Allows a user to login.
 2. Once per day, users are asked for the happiness level from 1 (Unhappy) to 3 (Neutral) to 5 (Very Happy)
 3. After they have entered their happiness level or upon any return visit, shows a statistics page.
@@ -11,6 +13,7 @@ Create a simple Django application that:
 6. Bonus: SaaS! Users can belong to teams and only their teams stats are shown.
 
 ## Guidelines
+
 * You MUST include installation instructions so that it can be run locally be other developers.
 * You MUST document any applications or external packages you use.
 * You SHOULD be following Django best practices.
@@ -19,12 +22,15 @@ Create a simple Django application that:
 * You SHOULD incrementally commit to this repository along the way.
 
 ## Instructions
+
 1. You have been invited to a private repository, commit you solution here.
 2. Create your solution. Test it. Test it again to be sure.
 4. Submit a PR (pull request) back to this repository indicating your solution is ready for review
 
 ## Evaluation Criteria
+
 You will be evaluated with the following in mind:
+
 * Does the solution satisfy the five (or 6) requirements?
 * Does the solution run locally based on the provided instructions?
 * Does the solution make good use of tools/frameworks/libraries/APIs?
