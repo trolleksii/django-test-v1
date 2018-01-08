@@ -23,9 +23,9 @@ Create a simple Django application that:
 
 ## Instructions
 
-1. You have been invited to a private repository, commit you solution here.
-2. Create your solution. Test it. Test it again to be sure.
-4. Submit a PR (pull request) back to this repository indicating your solution is ready for review
+1. Fork this github repository using your personal github account.
+2. Create your solution. Test it. Test it again to be sure. Commit it and push to your personal repo.
+3. Submit a PR (pull request) back to this repository indicating your solution is ready for review.
 
 ## Evaluation Criteria
 
