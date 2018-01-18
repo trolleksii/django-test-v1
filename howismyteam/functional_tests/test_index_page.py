@@ -9,4 +9,5 @@ class IndexPageTest(FunctionalTests):
     def test_django_landing_page(self):
         # Project is still empty, but Django landing page should be available
         self.browser.get('http://localhost:8000')
-        self.assertIn('Django', self.browser.title)
+        self.assertIn('How is my team?', self.browser.title)
+        time.sleep(10)
