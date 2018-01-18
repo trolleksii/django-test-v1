@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block body_block %}
+{% if user.is_authenticated %}
+    <a id="id_log_out" role="button" href="/logout/">Log Out</a>
+{% else %}
+    <p>User is not logged in</p>
+{% endif %}
+{% endblock %}

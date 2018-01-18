@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 {% block body_block %}
     <h1>Welcome to the TeamStats project!</h1>
-    <a id="id_log_in" role="button" href="#">Log In</a>
+    {% if user.is_authenticated %}
+    <p>User is logged id</p>
+    <a id="id_log_out" role="button" href="/logout/">Log Out</a>
+    {% else %}
+    <p>User is not logged in</p>
+    <a id="id_log_in" role="button" href="/login/">Log In</a>
+    {% endif %}
 {% endblock %}
