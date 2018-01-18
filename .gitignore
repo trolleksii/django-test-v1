@@ -1,0 +1,9 @@
+db.sqlite3
+geckodriver.log
+__pycache__
+*.pyc
+*.swp
+.vscode
+*.code-workspace
+INSTALL.md
+
