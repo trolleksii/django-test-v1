@@ -1,4 +1,5 @@
 from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView, LogoutView
 
@@ -11,11 +12,10 @@ class IndexView(TemplateView):
 class UserLoginView(LoginView):
 
     template_name = 'login.html'
+    redirect_authenticated_user = True
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['next'] = reverse('teamstats:results_view')
-        return context
+    def get_redirect_url(self):
+        return reverse('teamstats:results_view')
 
 
 class UserLogoutView(LogoutView):
@@ -23,9 +23,12 @@ class UserLogoutView(LogoutView):
     next_page = '/'
 
 
-class ResultsView(TemplateView):
+class ResultsView(LoginRequiredMixin, TemplateView):
 
     template_name = 'results.html'
+
+    def get_login_url(self):
+        return reverse('teamstats:login_view')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -38,8 +41,11 @@ class ResultsView(TemplateView):
         return context
 
 
-class UserPollView(TemplateView):
+class UserPollView(LoginRequiredMixin, TemplateView):
     """
     Dummie.
     """
     template_name = 'poll.html'
+
+    def get_login_url(self):
+        return reverse('teamstats:login_view')
