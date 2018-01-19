@@ -3,6 +3,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView, LogoutView
 
+from .models import get_happiness_stats
+
 
 class IndexView(TemplateView):
 
@@ -32,11 +34,8 @@ class ResultsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # inject happiness stats here
-        # mock data
-        happiness = [5]*5
-        average = 5
-        context['detailed'] = happiness
+        detailed, average = get_happiness_stats(self.request.user)
+        context['detailed'] = detailed
         context['average'] = average
         return context
 
