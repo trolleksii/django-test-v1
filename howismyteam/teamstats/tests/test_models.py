@@ -1,7 +1,11 @@
+from datetime import date, timedelta
+
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
-from teamstats.models import Team, User, UserPollProfile
+from teamstats.models import (
+    Team, User, UserPollProfile, get_happiness_stats, user_was_polled_today
+)
 
 
 class TeamModelTest(TestCase):
@@ -50,3 +54,57 @@ class UserPollProfileModelTest(TestCase):
                 profile = UserPollProfile(user=user, happiness=h)
                 profile.full_clean()
         user.delete()
+
+
+class MiscFunctionsTest(TestCase):
+
+    def test_get_happiness_stats_with_team(self):
+        user = User.objects.create(username="TestUser0", password="password")
+        team = Team.objects.create(name='Red Team')
+        UserPollProfile.objects.create(
+            user=user,
+            team=team,
+            happiness=2)
+        for i in range(1, 5):
+            new_user = User.objects.create(
+                username="TestUser{}".format(i), 
+                password="password"
+            )
+            UserPollProfile.objects.create(user=new_user, happiness=4)
+        expected_detailed = [0, 1, 0, 0, 0]
+        expected_average = 2
+        detailed, average = get_happiness_stats(user)
+        self.assertEqual(expected_average, average)
+        self.assertEqual(expected_detailed, detailed)
+
+    def test_get_happiness_stats_without_team(self):
+        user = User.objects.create(username="TestUser0", password="password")
+        UserPollProfile.objects.create(user=user, happiness=1)
+        for i in range(1, 5):
+            new_user = User.objects.create(
+                username="TestUser{}".format(i), 
+                password="password"
+            )
+            UserPollProfile.objects.create(user=new_user, happiness=5)
+        expected_detailed = [1, 0, 0, 0, 4]
+        expected_average = 4.2
+        detailed, average = get_happiness_stats(user)
+        self.assertEqual(expected_average, average)
+        self.assertEqual(expected_detailed, detailed)
+
+    def test_if_user_was_polled_today(self):
+        user = User.objects.create(username="TestUser0", password="password")
+        UserPollProfile.objects.create(user=user, poll_date=date.today())
+        expected = True
+        result = user_was_polled_today(user)
+        self.assertEqual(result, expected)
+
+    def test_if_user_was_polled_yesterday(self):
+        user = User.objects.create(username="TestUser0", password="password")
+        UserPollProfile.objects.create(
+            user=user,
+            poll_date=date.today() - timedelta(days=1)
+        )
+        expected = False
+        result = user_was_polled_today(user)
+        self.assertEqual(result, expected)
