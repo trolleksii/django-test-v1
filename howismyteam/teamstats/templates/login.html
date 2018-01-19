@@ -1,10 +1,6 @@
 {% extends "base.html" %}
 {% block body_block %}
-{% if next %}
-<form action="/login/?next={{ next }}" method="post">
-{%else%}
-<form action="/login/" method="post" >
-{% endif %}
+<form action="{% url 'teamstats:login_view' %}?next={{ next }}" method="post">
     {% csrf_token %}       
     {{ form.as_p }}        
     <button type="submit">Log In</button>

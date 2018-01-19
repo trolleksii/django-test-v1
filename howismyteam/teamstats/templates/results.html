@@ -1,8 +1,29 @@
 {% extends "base.html" %}
 {% block body_block %}
 {% if user.is_authenticated %}
-    <a id="id_log_out" role="button" href="/logout/">Log Out</a>
+    <a id="id_log_out" role="button" href="{% url 'teamstats:logout_view' %}">Log Out</a>
 {% else %}
     <p>User is not logged in</p>
 {% endif %}
+<br>
+<table>
+    <thead>
+        <th>Happiness level</th>
+        <th>People with same happines</th>
+    </thead>
+    <tbody>
+        {% for entry in detailed %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ entry }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>Average happiness:</td>
+            <td>{{ average }}</td>
+        </tr>
+    </tfoot>
+</table>
 {% endblock %}
