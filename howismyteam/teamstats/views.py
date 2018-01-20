@@ -64,7 +64,9 @@ class ResultsView(LoginRequiredMixin, PollRedirectorMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        detailed, average = get_happiness_stats(self.request.user)
+        team, detailed, average = get_happiness_stats(self.request.user)
+        if team:
+            context['team'] = team.name
         context['detailed'] = detailed
         context['average'] = average
         return context

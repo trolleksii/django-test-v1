@@ -20,7 +20,7 @@ def get_happiness_stats(user):
         team_or_none = None
     detailed_happiness = [UserPollProfile.objects.filter(happiness=i, team=team_or_none).count() for i in range(1, 6)]
     average_happiness = UserPollProfile.objects.filter(team=team_or_none).aggregate(Avg('happiness'))['happiness__avg']
-    return (detailed_happiness, average_happiness, )
+    return (team_or_none, detailed_happiness, average_happiness, )
 
 
 def is_eligible_for_poll(user):
