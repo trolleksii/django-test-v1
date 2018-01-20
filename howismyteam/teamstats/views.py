@@ -1,9 +1,10 @@
-from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import reverse
+from django.views.generic import TemplateView, UpdateView
 
-from .models import get_happiness_stats
+from .forms import UserPollForm
+from .models import get_happiness_stats, UserPollProfile
 
 
 class IndexView(TemplateView):
@@ -40,11 +41,16 @@ class ResultsView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class UserPollView(LoginRequiredMixin, TemplateView):
-    """
-    Dummie.
-    """
+class UserPollView(LoginRequiredMixin, UpdateView):
+
     template_name = 'poll.html'
+    form_class = UserPollForm
 
     def get_login_url(self):
         return reverse('teamstats:login_view')
+
+    def get_success_url(self):
+        return reverse('teamstats:results_view')
+
+    def get_object(self, querryser=None):
+        return UserPollProfile.objects.get(user=self.request.user)
