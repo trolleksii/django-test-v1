@@ -23,16 +23,26 @@ def get_happiness_stats(user):
     return (detailed_happiness, average_happiness, )
 
 
-def user_was_polled_today(user):
+def is_eligible_for_poll(user):
     """
-    Returns True if user was polled earlier this day.
+    Returns True if user wasn't polled earlier this day.
     """
     try:
         user_poll_profile = UserPollProfile.objects.get(user=user)
     except ObjectDoesNotExist:
         # for user without profile skip the poll
-        return True
-    return user_poll_profile.poll_date == date.today()
+        return False
+    return user_poll_profile.poll_date != date.today()
+
+
+def update_poll_date(user):
+    """
+    Set today as a poll_date in UserPollProfile of a corresponding user.
+    """
+    profile = UserPollProfile.objects.get(user=user)
+    profile.poll_date = date.today()
+    profile.full_clean()
+    profile.save()
 
 
 class Team(models.Model):
