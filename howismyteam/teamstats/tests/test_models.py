@@ -4,7 +4,8 @@ from django.test import TestCase
 from django.core.exceptions import ValidationError
 
 from teamstats.models import (
-    Team, User, UserPollProfile, get_happiness_stats, user_was_polled_today
+    Team, User, UserPollProfile, 
+    get_happiness_stats, is_eligible_for_poll, update_poll_date
 )
 
 
@@ -16,7 +17,7 @@ class TeamModelTest(TestCase):
             duplicate = Team(name="RedTeam")
             duplicate.full_clean()
 
-    def test_can_delete_list_without_affecting_user_profile(self):
+    def test_can_delete_list_without_deleting_user_profile(self):
         user = User.objects.create(username="TestUser1", password="password")
         team = Team.objects.create(name="Red Team")
         UserPollProfile.objects.create(user=user, team=team)
@@ -82,7 +83,7 @@ class MiscFunctionsTest(TestCase):
         UserPollProfile.objects.create(user=user, happiness=1)
         for i in range(1, 5):
             new_user = User.objects.create(
-                username="TestUser{}".format(i), 
+                username="TestUser{}".format(i),
                 password="password"
             )
             UserPollProfile.objects.create(user=new_user, happiness=5)
@@ -92,19 +93,30 @@ class MiscFunctionsTest(TestCase):
         self.assertEqual(expected_average, average)
         self.assertEqual(expected_detailed, detailed)
 
-    def test_if_user_was_polled_today(self):
+    def test_eligibility_if_user_was_polled_today(self):
         user = User.objects.create(username="TestUser0", password="password")
         UserPollProfile.objects.create(user=user, poll_date=date.today())
-        expected = True
-        result = user_was_polled_today(user)
+        expected = False
+        result = is_eligible_for_poll(user)
         self.assertEqual(result, expected)
 
-    def test_if_user_was_polled_yesterday(self):
+    def test_eligibility_if_user_was_polled_yesterday(self):
         user = User.objects.create(username="TestUser0", password="password")
         UserPollProfile.objects.create(
             user=user,
             poll_date=date.today() - timedelta(days=1)
         )
-        expected = False
-        result = user_was_polled_today(user)
+        expected = True
+        result = is_eligible_for_poll(user)
         self.assertEqual(result, expected)
+
+    def test_updtate_poll_time(self):
+        user = User.objects.create(username="TestUser0", password="password")
+        old_date = date.today() - timedelta(days=1)
+        UserPollProfile.objects.create(
+            user=user,
+            poll_date=old_date
+        )
+        update_poll_date(user)
+        profile = UserPollProfile.objects.get(user=user)
+        self.assertNotEqual(profile.poll_date, old_date)
