@@ -81,7 +81,7 @@ class UserPollView(LoginRequiredMixin, PollRedirectorMixin, UpdateView):
         return reverse('teamstats:login_view')
 
     def get_success_url(self):
-        # poll was successfull, so we can save the date
+        # poll was successfull, save the date
         update_poll_date(self.request.user)
         return reverse('teamstats:results_view')
 
