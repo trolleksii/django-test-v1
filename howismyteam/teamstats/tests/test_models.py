@@ -5,10 +5,10 @@ from teamstats.models import (
     get_happiness_stats, is_eligible_for_poll, update_poll_date
 )
 
-from .base import ViewBaseTestCase
+from .base import TeamstatsBaseTestCase
 
 
-class TeamModelTest(ViewBaseTestCase):
+class TeamModelTest(TeamstatsBaseTestCase):
 
     def test_cant_have_duplicate_teams(self):
         Team.objects.create(name="RedTeam")
@@ -30,7 +30,7 @@ class TeamModelTest(ViewBaseTestCase):
             team.full_clean()
 
 
-class UserPollProfileModelTest(ViewBaseTestCase):
+class UserPollProfileModelTest(TeamstatsBaseTestCase):
 
     def test_cant_create_two_profiles_for_one_user(self):
         UserPollProfile.objects.get_or_create(user=self.users[0])
@@ -52,7 +52,7 @@ class UserPollProfileModelTest(ViewBaseTestCase):
                 profile.full_clean()
 
 
-class MiscFunctionsTest(ViewBaseTestCase):
+class MiscFunctionsTest(TeamstatsBaseTestCase):
 
     def test_get_happiness_stats_with_team(self):
         expected_detailed = [0, 0, 0, 1, 1]

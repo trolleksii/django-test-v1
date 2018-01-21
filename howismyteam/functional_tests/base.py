@@ -1,15 +1,18 @@
+import time
+
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 
-from unittest import TestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
-from teamstats.models import User, Team, UserPollProfile
+MAX_WAIT = 10
 
 
-class FunctionalTests(TestCase):
+class FunctionalTests(StaticLiveServerTestCase):
     """
     Base class with setUp, tearDown and other helper methods.
     """
-    test_users = []
+    fixtures = ['profiles.json']
 
     @classmethod
     def setUpClass(cls):
@@ -20,3 +23,13 @@ class FunctionalTests(TestCase):
     def tearDownClass(cls):
         cls.browser.quit()
         super().tearDownClass()
+
+    def wait_for(self, waited_fn):
+        start_time = time.time()
+        while True:
+            try:
+                return waited_fn()
+            except (AssertionError, WebDriverException) as err:
+                if time.time() - start_time > MAX_WAIT:
+                    raise err
+                time.sleep(0.5)

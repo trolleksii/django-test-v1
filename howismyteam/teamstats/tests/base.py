@@ -7,7 +7,12 @@ from teamstats.models import (
 )
 
 
-class ViewBaseTestCase(TestCase):
+class TestWithFixtures(TestCase):
+
+    fixtures = ['profiles.json']
+
+
+class TeamstatsBaseTestCase(TestCase):
 
     credentials = [
         {
