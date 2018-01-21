@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block body_block %}
-    <h1>Welcome to the TeamStats project!</h1>
+<div class="jumbotron">
+    <h1>Welcome to the TeamStats Project!</h1>
     {% if user.is_authenticated %}
-    <p>User is logged id</p>
-    <a id="id_log_out" role="button" href="{% url 'teamstats:logout_view' %}">Log Out</a>
+    <a class="btn btn-default btn-lg" role="button" href="{% url 'teamstats:results_view' %}">View Stats</a></h2>
     {% else %}
-    <p>User is not logged in</p>
-    <a id="id_log_in" role="button" href="{% url 'teamstats:login_view' %}">Log In</a>
+    <a class="btn btn-default btn-lg" role="button" href="{% url 'teamstats:login_view' %}">Log In</a></h2>
     {% endif %}
+</div>
 {% endblock %}

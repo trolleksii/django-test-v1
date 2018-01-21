@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block body_block %}
+<h2>You haven't vote today. Please select how happy are you?</h1>
 <form method="post">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="Select" />
+    <input class="btn btn-default" type="submit" value="Select" />
 </form>
 {% endblock %}

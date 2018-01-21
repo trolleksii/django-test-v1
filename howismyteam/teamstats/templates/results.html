@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 {% block body_block %}
-{% if user.is_authenticated %}
-    <a id="id_log_out" role="button" href="{% url 'teamstats:logout_view' %}">Log Out</a>
+<h1>Hello, {{ user.username }}!</h1>
+{% if team %}
+<h3>Here are the user happiness stats for your team - {{ team }}:</h2>
 {% else %}
-    <p>User is not logged in</p>
+<h3>Here are the user happiness stats:</h2>
 {% endif %}
-<br>
-<table>
+<table class="table bordered">
     <thead>
         <th>Happiness level</th>
-        <th>People with same happines</th>
+        <th>Users on this level</th>
     </thead>
     <tbody>
         {% for entry in detailed %}
@@ -21,8 +21,8 @@
     </tbody>
     <tfoot>
         <tr>
-            <td>Average happiness:</td>
-            <td>{{ average }}</td>
+            <td>Average happiness level:</td>
+            <td>{{ average|floatformat:2 }}</td>
         </tr>
     </tfoot>
 </table>

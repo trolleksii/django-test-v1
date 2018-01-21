@@ -3,6 +3,6 @@
 <form action="{% url 'teamstats:login_view' %}?next={{ next }}" method="post">
     {% csrf_token %}       
     {{ form.as_p }}        
-    <button type="submit">Log In</button>
+    <button class="btn btn-default" type="submit">Log In</button>
 </form>
 {% endblock %}
