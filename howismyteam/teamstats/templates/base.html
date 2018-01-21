@@ -16,14 +16,14 @@
                 <li><a class="navbar-brand" href="{% url 'index_view' %}">TeamStats</a></li>
                 {% if user.is_authenticated %}
                 {% if user.is_staff %}
-                <li><a href="{% url 'admin:index' %}">Admin page</a></li>
+                <li><a id="id_nav_admin" href="{% url 'admin:index' %}">Admin page</a></li>
                 {% endif %}
-                <li><a href="{% url 'teamstats:logout_view' %}">Log Out</a></li>
+                <li><a id="id_nav_logout" href="{% url 'teamstats:logout_view' %}">Log Out</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a id='user_info' href="#">Signed in as {{ user.username }}</a></li>
                 {% else %}
-                <li ><a href="{% url 'teamstats:login_view' %}">Log In</a></li>
+                <li ><a id="id_nav_login" href="{% url 'teamstats:login_view' %}">Log In</a></li>
                 {% endif %}
             </ul>
         </div>

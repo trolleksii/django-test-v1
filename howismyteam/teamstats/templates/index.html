@@ -3,9 +3,9 @@
 <div class="jumbotron">
     <h1>Welcome to the TeamStats Project!</h1>
     {% if user.is_authenticated %}
-    <a class="btn btn-default btn-lg" role="button" href="{% url 'teamstats:results_view' %}">View Stats</a></h2>
+    <a class="btn btn-default btn-lg" id="id_main_results" role="button" href="{% url 'teamstats:results_view' %}">View Stats</a></h2>
     {% else %}
-    <a class="btn btn-default btn-lg" role="button" href="{% url 'teamstats:login_view' %}">Log In</a></h2>
+    <a class="btn btn-default btn-lg" id="id_main_login" role="button" href="{% url 'teamstats:login_view' %}">Log In</a></h2>
     {% endif %}
 </div>
 {% endblock %}
