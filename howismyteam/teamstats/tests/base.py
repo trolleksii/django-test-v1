@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 from django.test import TestCase
 
@@ -27,6 +27,13 @@ class ViewBaseTestCase(TestCase):
             'team': 'SomeTeam',
             'happiness': 5,
         },
+        {
+            'username': 'User4',
+            'password': 'password',
+            'team': 'SomeTeam',
+            'happiness': 4,
+            'poll_date': date.today() - timedelta(days=1),
+        }
     ]
 
     @classmethod
@@ -36,7 +43,7 @@ class ViewBaseTestCase(TestCase):
 
 def create_test_users(data):
     """
-    Tekes tuple of dictionaries with credentials for user profiles and returns 
+    Tekes tuple of dictionaries with credentials for user profiles and returns
     set of users that were added to the DB.
     """
     users = []
