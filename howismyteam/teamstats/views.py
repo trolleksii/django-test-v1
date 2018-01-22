@@ -85,5 +85,5 @@ class UserPollView(LoginRequiredMixin, PollRedirectorMixin, UpdateView):
         update_poll_date(self.request.user)
         return reverse('teamstats:results_view')
 
-    def get_object(self, querryser=None):
+    def get_object(self, queryset=None):
         return UserPollProfile.objects.get(user=self.request.user)
