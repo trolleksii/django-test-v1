@@ -49,6 +49,7 @@ class PollRedirectorMixin:
 
         eligibility = is_eligible_for_poll(self.request.user)
         # redirect according to the table or invoke super().dispatch if
+        # redirection is not needed.
         return redirection_table.get(
             (eligibility, request.path),
             super().dispatch(request, *args, **kwargs)

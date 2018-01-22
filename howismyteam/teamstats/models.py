@@ -11,12 +11,12 @@ def get_happiness_stats(user):
     """
     Returns breakdown on happines level and an average happiness as a tuple.
     If the user is in some team, stats are calculated for this team only. In
-    other case, stats are calculated for every user without a team.
+    other case, stats are calculated for all users without a team.
     """
     try:
         team_or_none = UserPollProfile.objects.get(user=user).team
     except ObjectDoesNotExist:
-        # for user without profile get stats for all users without a team
+        # if user without profile get stats for all users without a team
         team_or_none = None
 
     detailed_happiness = [UserPollProfile.objects.filter(
@@ -30,7 +30,7 @@ def get_happiness_stats(user):
 
 def is_eligible_for_poll(user):
     """
-    Returns True if user wasn't polled today.
+    Returns True if user is eligible for polled (wasn't polled today).
     """
     try:
         user_poll_profile = UserPollProfile.objects.get(user=user)
