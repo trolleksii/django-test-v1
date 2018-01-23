@@ -19,9 +19,9 @@ $ `python manage.py migrate`<br>
 9. Install Google Chrome browser and Selenium webdriver:<br>
 To run functional tests you will need [Google Chrome](https://www.google.com/chrome/) and a [webdriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) for selenium:<br>
 $ `curl https://chromedriver.storage.googleapis.com/2.35/chromedriver_linux64.zip --create-dirs -o ~/.local/bin`<br>
-10. Run tests to make sure if everything working as it should:<br>
+10. Run tests to make sure that everything is working as it should:<br>
 $ `python manage.py test`<br>
-11. Create a supeuser:<br>
+11. Create a superuser:<br>
 $ `python manage.py createsuperuser`<br>
-12. Run project:<br>
+12. Run the project:<br>
 $ `python manage.pu runserver`<br>
