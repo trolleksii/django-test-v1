@@ -32,16 +32,16 @@ class UserLogoutView(LogoutView):
 class PollRedirectorMixin:
     """
     Redirects to poll page if the user is eligible.
-    Othewise redirets to the results page.
+    Othewise redirects to the results page.
     """
 
     def dispatch(self, request, *args, **kwargs):
         results_url = reverse('teamstats:results_view')
         poll_url = reverse('teamstats:userpoll_view')
-        # Redirect is based of users ability to participate in a poll and
-        # the page he is trying to access. If user is eligible and is trying to
-        # access results page - he will be redirected to the poll page and
-        # vice versa.
+        # Redirect is based on users ability to participate in a poll and
+        # the page he is trying to access. If the user is eligible and is 
+        # trying to access results page - he will be redirected to the poll 
+        # page and vice versa.
         redirection_table = {
             (True, results_url): redirect(poll_url),
             (False, poll_url): redirect(results_url)

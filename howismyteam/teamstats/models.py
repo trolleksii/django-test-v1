@@ -10,13 +10,14 @@ from django.db.models import Avg
 def get_happiness_stats(user):
     """
     Returns breakdown on happines level and an average happiness as a tuple.
-    If the user is in some team, stats are calculated for this team only. In
-    other case, stats are calculated for all users without a team.
+    If the user is in some team, stats are calculated for this team only. In 
+    the other case, stats are calculated for all users without a team.
     """
     try:
         team_or_none = UserPollProfile.objects.get(user=user).team
     except ObjectDoesNotExist:
-        # if user without profile get stats for all users without a team
+        # if the user is without a profile - calculate stats for all users 
+        # without a team
         team_or_none = None
 
     detailed_happiness = [UserPollProfile.objects.filter(
@@ -30,12 +31,12 @@ def get_happiness_stats(user):
 
 def is_eligible_for_poll(user):
     """
-    Returns True if user is eligible for polled (wasn't polled today).
+    Returns True if the user is eligible for poll (wasn't polled today).
     """
     try:
         user_poll_profile = UserPollProfile.objects.get(user=user)
     except ObjectDoesNotExist:
-        # for user without profile skip the poll
+        # if the user is without a profile - skip the poll
         return False
     return user_poll_profile.poll_date != date.today()
 
@@ -66,10 +67,10 @@ class UserPollProfile(models.Model):
     Represents user's poll profile. Each user should have a profile to be able
     to participate in the poll.
     """
-    # Each profile must point to a user, if user is deleted, so is profile.
+    # Each profile must point to a user, if the user is deleted, so is profile.
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # User may may have a team, team can be deleted, without deleting
-    # user's profile
+    # user's profile.
     team = models.ForeignKey(
         Team,
         on_delete=models.SET_NULL,
