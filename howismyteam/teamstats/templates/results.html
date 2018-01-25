@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block body_block %}
 <h1>Hello, {{ user.username }}!</h1>
-{% if team %}
-<h3>Here are the user happiness stats for your team - {{ team }}:</h2>
+{% if user.pollprofile.team %}
+<h3>Here are the user happiness stats for your team - {{ user.pollprofile.team }}:</h2>
 {% else %}
 <h3>Here are the user happiness stats:</h2>
 {% endif %}

@@ -10,24 +10,23 @@ from django.db.models import Avg
 
 def get_happiness_stats(user):
     """
-    Returns name of a team, breakdown on happines level and an average happiness as a tuple.
-    If the user is in some team, stats are calculated for this team only. In 
+    Returns breakdown on happines level and an average happiness as a tuple.
+    If the user is in some team, stats are calculated for this team only. In
     the other case, stats are calculated for all users without a team.
     """
     try:
-        team_or_none = UserPollProfile.objects.get(user=user).team
+        team_or_none = user.pollprofile.team
     except ObjectDoesNotExist:
-        # if the user is without a profile - calculate stats for all users 
+        # if the user is without a profile - calculate stats for all users
         # without a team
         team_or_none = None
 
-    all_teammates = partial(UserPollProfile.objects.filter, team=team_or_none)
-
-    detailed_happiness = [all_teammates(happiness=i).count() for i in range(1, 6)]
-
-    average_happiness = all_teammates().aggregate(Avg('happiness'))['happiness__avg']
-
-    return (team_or_none, detailed_happiness, average_happiness, )
+    get_teammates = partial(PollProfile.objects.filter, team=team_or_none)
+    detailed_happiness = [get_teammates(
+        happiness=i).count() for i in range(1, 6)]
+    average_happiness = get_teammates().aggregate(
+        Avg('happiness'))['happiness__avg']
+    return (detailed_happiness, average_happiness, )
 
 
 def is_eligible_for_poll(user):
@@ -35,26 +34,15 @@ def is_eligible_for_poll(user):
     Returns True if the user is eligible for poll (wasn't polled today).
     """
     try:
-        user_poll_profile = UserPollProfile.objects.get(user=user)
+        return user.pollprofile.poll_date != date.today()
     except ObjectDoesNotExist:
         # if the user is without a profile - skip the poll
         return False
-    return user_poll_profile.poll_date != date.today()
-
-
-def update_poll_date(user):
-    """
-    Set poll_date in UserPollProfile of a corresponding user for today.
-    """
-    profile = UserPollProfile.objects.get(user=user)
-    profile.poll_date = date.today()
-    profile.full_clean()
-    profile.save()
 
 
 class Team(models.Model):
     """
-    Represents a team of users. Happiness stats will be calculated for all
+    Represents a team of users. Happinesuserpos stats will be calculated for all
     users of the same team.
     """
     name = models.CharField(max_length=256, unique=True)
@@ -63,7 +51,7 @@ class Team(models.Model):
         return self.name
 
 
-class UserPollProfile(models.Model):
+class PollProfile(models.Model):
     """
     Represents user's poll profile. Each user should have a profile to be able
     to participate in the poll.
@@ -90,6 +78,14 @@ class UserPollProfile(models.Model):
     )
     # Date when user was polled last time. Not mandatory, will be set on poll.
     poll_date = models.DateField(null=True, blank=True)
+
+    def update_poll_date(self):
+        """
+        Set poll_date in PollProfile of a corresponding user for today.
+        """
+        self.poll_date = date.today()
+        self.full_clean()
+        self.save()
 
     def __str__(self):
         return self.user.username

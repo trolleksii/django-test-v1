@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Team, UserPollProfile
+from .models import Team, PollProfile
 
 admin.site.register(Team)
-admin.site.register(UserPollProfile)
+admin.site.register(PollProfile)

@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import UserPollProfile
+from .models import PollProfile
 
 
 class UserPollForm(forms.ModelForm):
@@ -14,5 +14,5 @@ class UserPollForm(forms.ModelForm):
     )
 
     class Meta:
-        model = UserPollProfile
+        model = PollProfile
         fields = ('happiness', )

@@ -3,7 +3,7 @@ from datetime import date
 from django.test import TestCase
 from django.urls import reverse
 
-from teamstats.models import User, UserPollProfile
+from teamstats.models import User
 
 
 class TestWithFixtures(TestCase):
@@ -41,11 +41,7 @@ class LoginViewTest(TestWithFixtures):
         self.assertRedirects(response, reverse('teamstats:userpoll_view'))
 
     def test_successfull_login_redirects_to_results(self):
-        profile = UserPollProfile.objects.get(
-            user=User.objects.get(
-                username='Kenneth'
-            )
-        )
+        profile = User.objects.get(username='Kenneth').pollprofile
         profile.poll_date = date.today()
         profile.save()
         response = self.client.post(
@@ -128,11 +124,7 @@ class PollViewTest(TestWithFixtures):
             reverse('teamstats:userpoll_view'),
             data={'happiness': 1}
         )
-        profile = UserPollProfile.objects.get(
-            user=User.objects.get(
-                username='Kenneth'
-            )
-        )
+        profile = User.objects.get(username='Kenneth').pollprofile
         self.assertEqual(profile.happiness, 1)
         self.assertEqual(profile.poll_date, date.today())
 
@@ -151,11 +143,7 @@ class PollViewTest(TestWithFixtures):
             reverse('teamstats:userpoll_view'),
             data={'happiness': 3}
         )
-        profile = UserPollProfile.objects.get(
-            user=User.objects.get(
-                username='Kenneth'
-            )
-        )
+        profile = User.objects.get(username='Kenneth').pollprofile
         # happiness=3 saved to DB
         self.assertEqual(profile.happiness, 3)
         # sending another post happiness=1

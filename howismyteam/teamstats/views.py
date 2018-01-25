@@ -4,10 +4,7 @@ from django.shortcuts import redirect, reverse
 from django.views.generic import TemplateView, UpdateView
 
 from .forms import UserPollForm
-from .models import (
-    get_happiness_stats, is_eligible_for_poll, update_poll_date,
-    UserPollProfile
-)
+from .models import get_happiness_stats, is_eligible_for_poll
 
 
 class IndexView(TemplateView):
@@ -39,8 +36,8 @@ class PollRedirectorMixin:
         results_url = reverse('teamstats:results_view')
         poll_url = reverse('teamstats:userpoll_view')
         # Redirect is based on users ability to participate in a poll and
-        # the page he is trying to access. If the user is eligible and is 
-        # trying to access results page - he will be redirected to the poll 
+        # the page he is trying to access. If the user is eligible and is
+        # trying to access results page - he will be redirected to the poll
         # page and vice versa.
         redirection_table = {
             (True, results_url): redirect(poll_url),
@@ -65,9 +62,7 @@ class ResultsView(LoginRequiredMixin, PollRedirectorMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        team, detailed, average = get_happiness_stats(self.request.user)
-        if team:
-            context['team'] = team.name
+        detailed, average = get_happiness_stats(self.request.user)
         context['detailed'] = detailed
         context['average'] = average
         return context
@@ -83,8 +78,8 @@ class UserPollView(LoginRequiredMixin, PollRedirectorMixin, UpdateView):
 
     def get_success_url(self):
         # poll was successfull, save the date
-        update_poll_date(self.request.user)
+        self.request.user.pollprofile.update_poll_date()
         return reverse('teamstats:results_view')
 
     def get_object(self, queryset=None):
-        return UserPollProfile.objects.get(user=self.request.user)
+        return self.request.user.pollprofile

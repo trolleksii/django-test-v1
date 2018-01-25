@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from teamstats.models import Team, User, UserPollProfile
+from teamstats.models import Team, User, PollProfile
 
 
 class TeamModelTest(TestCase):
@@ -15,9 +15,9 @@ class TeamModelTest(TestCase):
     def test_can_delete_list_without_deleting_user_profile(self):
         user = User.objects.create(username="TestUser1", password="password")
         team = Team.objects.create(name="Red Team")
-        UserPollProfile.objects.create(user=user, team=team)
+        PollProfile.objects.create(user=user, team=team)
         team.delete()
-        profile = UserPollProfile.objects.get(user=user)
+        profile = PollProfile.objects.get(user=user)
         self.assertEqual(profile.team, None)
 
     def test_cant_create_team_without_name(self):
@@ -26,25 +26,25 @@ class TeamModelTest(TestCase):
             team.full_clean()
 
 
-class UserPollProfileModelTest(TestCase):
+class PollProfileModelTest(TestCase):
 
     def test_cant_create_two_profiles_for_one_user(self):
-        UserPollProfile.objects.get_or_create(
+        PollProfile.objects.get_or_create(
             user=User.objects.get_or_create(username='Eric')[0]
         )
         with self.assertRaises(ValidationError):
-            duplicate = UserPollProfile(
+            duplicate = PollProfile(
                 user=User.objects.get_or_create(username='Eric')[0]
             )
             duplicate.full_clean()
 
     def test_cant_save_profile_without_user(self):
         with self.assertRaises(ValidationError):
-            profile = UserPollProfile()
+            profile = PollProfile()
             profile.full_clean()
 
     def test_profile_happiness_validators(self):
-        profile = UserPollProfile(
+        profile = PollProfile(
             user=User.objects.get_or_create(username='Eric')[0]
         )
         happiness_cases = (-1, 0, 6)
