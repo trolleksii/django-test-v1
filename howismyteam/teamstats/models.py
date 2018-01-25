@@ -22,10 +22,8 @@ def get_happiness_stats(user):
         team_or_none = None
 
     get_teammates = partial(PollProfile.objects.filter, team=team_or_none)
-    detailed_happiness = [get_teammates(
-        happiness=i).count() for i in range(1, 6)]
-    average_happiness = get_teammates().aggregate(
-        Avg('happiness'))['happiness__avg']
+    detailed_happiness = [get_teammates(happiness=i).count() for i in range(1, 6)]
+    average_happiness = get_teammates().aggregate(Avg('happiness'))['happiness__avg']
     return (detailed_happiness, average_happiness, )
 
 
