@@ -1,9 +1,8 @@
 from datetime import date
-from functools import partial
 
+from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Avg
 
@@ -21,9 +20,9 @@ def get_happiness_stats(user):
         # without a team
         team_or_none = None
 
-    get_teammates = partial(PollProfile.objects.filter, team=team_or_none)
-    detailed_happiness = [get_teammates(happiness=i).count() for i in range(1, 6)]
-    average_happiness = get_teammates().aggregate(Avg('happiness'))['happiness__avg']
+    teammates = PollProfile.objects.filter(team=team_or_none)
+    average_happiness = teammates.aggregate(Avg('happiness'))['happiness__avg']
+    detailed_happiness = [teammates.filter(happiness=i).count() for i in range(1, 6)]
     return (detailed_happiness, average_happiness, )
 
 
@@ -82,7 +81,6 @@ class PollProfile(models.Model):
         Set poll_date in PollProfile of a corresponding user for today.
         """
         self.poll_date = date.today()
-        self.full_clean()
         self.save()
 
     def __str__(self):
