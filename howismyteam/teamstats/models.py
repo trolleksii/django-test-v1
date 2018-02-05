@@ -80,8 +80,7 @@ class PollProfile(models.Model):
         """
         Set poll_date in PollProfile of a corresponding user for today.
         """
-        self.poll_date = date.today()
-        self.save()
+        PollProfile.objects.filter(user=self.user).update(poll_date=date.today())
 
     def __str__(self):
         return self.user.username
