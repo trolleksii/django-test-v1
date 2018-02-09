@@ -1,37 +1,44 @@
 # How is My Team?
 A simple Django application to allow daily checkins and monitoring of your teams happiness.
 
-## Requirements
+## Installation instructions
 
-Create a simple Django application that:
+1. Install Python3, pip, venv:
+`sudo apt install python3 python3-pip python3-venv`
+2. Clone this repository:
+```
+mkdir project
+cd ./project
+git clone https://github.com/trolleksii/django-test.git
+```
+3. Create a new virtual environment with Python 3 interpreter:
+ `virtualenv -p python3 ./venv`
+4. Activate it:
+ `source ./venv/bin/activate`
+6. Install required packages from requirements.txt:
+ `pip install -r ./django-test/requirements.txt`
+7. `cd` into ./django-test/howismyteam:
+ `cd ./django-test/howismyteam/`
+8. Perform database migrations:
+ `python manage.py migrate`
+9. Install Google Chrome browser and Selenium webdriver:
+To run functional tests you will need [Google Chrome](https://www.google.com/chrome/) and a [webdriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) for selenium:
+`curl https://chromedriver.storage.googleapis.com/2.35/chromedriver_linux64.zip --create-dirs -o ~/.local/bin`
+10. Run tests to make sure that everything is working as it should:
+ `python manage.py test`
 
-1. Allows a user to login.
-2. Once per day, users are asked for the happiness level from 1 (Unhappy) to 3 (Neutral) to 5 (Very Happy)
-3. After they have entered their happiness level or upon any return visit, shows a statistics page.
-4. The statistics page anonymously displays the number of people at each level and the average happiness of the team.
-5. New users can be added via the Django admin.
-6. Bonus: SaaS! Users can belong to teams and only their teams stats are shown.
 
-## Guidelines
+## Usage instructions
 
-* You MUST include installation instructions so that it can be run locally be other developers.
-* You MUST document any applications or external packages you use.
-* You SHOULD be following Django best practices.
-* You SHOULD take as little or as long as you need (but don't overdo it). You will not be evaluated on time to complete.
-* You SHOULD ask questions if anything specified here is not clear in any way.
-* You SHOULD incrementally commit to this repository along the way.
+1. Create a superuser:
+ `python manage.py createsuperuser`
+2. Run the project:
+ `python manage.py runserver`
+3. Visit [project's webpage](http://localhost:8000) and login as a superuser.
+4. Navigate to the admin page and add some **PollProfiles**(**User** field is mandatory, **Team** is optional, **happines** should be empty on creation or user will not be able to participate in the poll on that day) for users of the project
+5. Relog as one of added users and participate in the poll
+6. Check poll results
 
-## Instructions
-
-1. Fork this github repository using your personal github account.
-2. Create your solution. Test it. Test it again to be sure. Commit it and push to your personal repo.
-3. Submit a PR (pull request) back to this repository indicating your solution is ready for review.
-
-## Evaluation Criteria
-
-You will be evaluated with the following in mind:
-
-* Does the solution satisfy the five (or 6) requirements?
-* Does the solution run locally based on the provided instructions?
-* Does the solution make good use of tools/frameworks/libraries/APIs?
-* Does the implementation follow established best practices (design patterns, language usage, code formatting, etc..)?
+Users with **PollProfile** that have a team will see stats for their team only. All others will see stats for all users without a team. 
+Users without **PollProfile** can't participate in the poll but still can see poll results for users without a team.
+By design the user with **PollProfile** which hadn't participated in the poll that day, will not see the poll results.
