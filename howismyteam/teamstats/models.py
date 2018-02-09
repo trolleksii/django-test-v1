@@ -30,11 +30,16 @@ def is_eligible_for_poll(user):
     """
     Returns True if the user is eligible for poll (wasn't polled today).
     """
+    eligibility = True
     try:
-        return user.pollprofile.poll_date != date.today()
+        # check if happiness in not Null
+        if user.pollprofile.happiness:
+            # check poll date
+            eligibility = user.pollprofile.poll_date != date.today()
     except ObjectDoesNotExist:
-        # if the user is without a profile - skip the poll
-        return False
+        # user don't have a poll profile, do nothing
+        eligibility = False
+    return eligibility
 
 
 class Team(models.Model):
@@ -64,7 +69,8 @@ class PollProfile(models.Model):
         null=True,
         blank=True
     )
-    # Happiness is not mandatory on creation. It will be set from webpage.
+    # Happiness should be null on creation of a new profile to pass the
+    # eligibility check
     happiness = models.PositiveIntegerField(
         null=True,
         blank=True,
@@ -73,14 +79,7 @@ class PollProfile(models.Model):
             MaxValueValidator(5),
         ]
     )
-    # Date when user was polled last time. Not mandatory, will be set on poll.
-    poll_date = models.DateField(null=True, blank=True)
-
-    def update_poll_date(self):
-        """
-        Set poll_date in PollProfile of a corresponding user for today.
-        """
-        PollProfile.objects.filter(user=self.user).update(poll_date=date.today())
+    poll_date = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.user.username

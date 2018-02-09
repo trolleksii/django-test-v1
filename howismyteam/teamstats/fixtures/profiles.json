@@ -174,7 +174,7 @@
     ],
     "team": 2,
     "happiness": null,
-    "poll_date": null
+    "poll_date": "2018-02-09"
   }
 },
 {
@@ -186,7 +186,7 @@
     ],
     "team": 1,
     "happiness": null,
-    "poll_date": null
+    "poll_date": "2018-02-09"
   }
 },
 {
@@ -198,7 +198,7 @@
     ],
     "team": 1,
     "happiness": null,
-    "poll_date": null
+    "poll_date": "2018-02-09"
   }
 },
 {
@@ -210,7 +210,7 @@
     ],
     "team": 1,
     "happiness": null,
-    "poll_date": null
+    "poll_date": "2018-02-09"
   }
 },
 {
@@ -222,7 +222,7 @@
     ],
     "team": 2,
     "happiness": null,
-    "poll_date": null
+    "poll_date": "2018-02-09"
   }
 },
 {
@@ -234,7 +234,7 @@
     ],
     "team": null,
     "happiness": null,
-    "poll_date": null
+    "poll_date": "2018-02-09"
   }
 },
 {
@@ -246,7 +246,7 @@
     ],
     "team": null,
     "happiness": null,
-    "poll_date": null
+    "poll_date": "2018-02-09"
   }
 }
 ]

@@ -14,8 +14,8 @@
     <tbody>
         {% for entry in detailed %}
         <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ entry }}</td>
+            <td>{{ entry.label }}</td>
+            <td>{{ entry.value }}</td>
         </tr>
         {% endfor %}
     </tbody>

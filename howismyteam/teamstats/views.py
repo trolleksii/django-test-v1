@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import redirect, reverse
 from django.views.generic import TemplateView, UpdateView
 
-from .forms import UserPollForm
+from .forms import UserPollForm, CHOICES
 from .models import get_happiness_stats, is_eligible_for_poll
 
 
@@ -63,6 +63,7 @@ class ResultsView(LoginRequiredMixin, PollRedirectorMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         detailed, average = get_happiness_stats(self.request.user)
+        detailed = [{'label': CHOICES[x][1], 'value': detailed[x]} for x in range(5)]
         context['detailed'] = detailed
         context['average'] = average
         return context
@@ -77,8 +78,6 @@ class UserPollView(LoginRequiredMixin, PollRedirectorMixin, UpdateView):
         return reverse('teamstats:login_view')
 
     def get_success_url(self):
-        # poll was successfull, save the date
-        self.request.user.pollprofile.update_poll_date()
         return reverse('teamstats:results_view')
 
     def get_object(self, queryset=None):

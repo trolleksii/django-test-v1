@@ -1,5 +1,4 @@
 from datetime import date
-
 from django.test import TestCase
 from django.urls import reverse
 
@@ -42,7 +41,7 @@ class LoginViewTest(TestWithFixtures):
 
     def test_successfull_login_redirects_to_results(self):
         profile = User.objects.get(username='Kenneth').pollprofile
-        profile.poll_date = date.today()
+        profile.happiness = 5
         profile.save()
         response = self.client.post(
             reverse('teamstats:login_view'),
@@ -72,43 +71,22 @@ class ResultsViewTest(TestWithFixtures):
         self.assertRedirects(response, reverse('teamstats:userpoll_view'))
 
     def test_user_see_team_results_only(self):
-        # way too big
-        def poll_user(username, password, happiness):
-            self.client.login(username=username, password=password)
+        # these teams are hardcoded in fixtures
+        team1 = ('Kenneth', 'qwerty123', 5), ('Kyle', 'qwerty123', 4),
+        team2 = ('Eric', 'qwerty123', 1),
+        # poll everyone
+        for entry in team1 + team2:
+            self.client.login(username=entry[0], password=entry[1])
             self.client.post(
                 reverse('teamstats:userpoll_view'),
-                data={'happiness': happiness}
+                data={'happiness': entry[2]}
             )
             self.client.logout()
-
-        def check_results(team):
-            # calculate expected values
-            expected_avg = float(sum([x[2] for x in team])) / len(team)
-            expected_detailed = [0] * 5
-            for entry in team:
-                expected_detailed[entry[2] - 1] += 1
-            # compare expected and real for each user
-            for entry in team:
-                self.client.login(username=entry[0], password=entry[1])
-                response = self.client.get(reverse('teamstats:results_view'))
-                self.assertEqual(response.context['detailed'], expected_detailed)
-                self.assertEqual(response.context['average'], expected_avg)
-                self.client.logout()
-
-        # each row is a separate team
-        team1 = ('Kenneth', 'qwerty123', 5), ('Kyle', 'qwerty123', 4), ('Stanley', 'qwerty123', 4)
-        team2 = ('Eric', 'qwerty123', 1),
-        no_team = ('Timmy', 'qwerty123', 5), ('Jimmy', 'qwerty123', 4),
-        # poll everyone
-        for entry in team1 + team2 + no_team:
-            poll_user(
-                username=entry[0],
-                password=entry[1],
-                happiness=entry[2]
-            )
-        check_results(team1)
-        check_results(team2)
-        check_results(no_team)
+        # check votes count
+        self.client.login(username='Kenneth', password='qwerty123')
+        response = self.client.get(reverse('teamstats:results_view'))
+        vote_count = sum([x['value'] for x in response.context['detailed']])
+        self.assertEqual(vote_count, len(team1))
 
 
 class PollViewTest(TestWithFixtures):
