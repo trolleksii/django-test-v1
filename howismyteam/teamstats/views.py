@@ -1,10 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Avg
 from django.shortcuts import redirect, reverse
 from django.views.generic import TemplateView, UpdateView
 
-from .forms import UserPollForm, CHOICES
-from .models import get_happiness_stats, is_eligible_for_poll
+from .forms import UserPollForm
+from .models import PollProfile
 
 
 class IndexView(TemplateView):
@@ -35,35 +37,55 @@ class PollRedirectorMixin:
     def dispatch(self, request, *args, **kwargs):
         results_url = reverse('teamstats:results_view')
         poll_url = reverse('teamstats:userpoll_view')
-        # Redirect is based on users ability to participate in a poll and
-        # the page he is trying to access. If the user is eligible and is
-        # trying to access results page - he will be redirected to the poll
-        # page and vice versa.
-        redirection_table = {
-            (True, results_url): redirect(poll_url),
-            (False, poll_url): redirect(results_url)
-        }
+        requested_page = request.path
 
-        eligibility = is_eligible_for_poll(self.request.user)
-        # redirect according to the table or invoke super().dispatch if
-        # redirection is not needed.
-        return redirection_table.get(
-            (eligibility, request.path),
-            super().dispatch(request, *args, **kwargs)
-        )
+        try:
+            eligibility = self.request.user.pollprofile.is_eligible_for_poll
+        except ObjectDoesNotExist:
+            eligibility = False
+
+        if eligibility:
+            if requested_page == results_url:
+                # user is eligible for poll but tries to access results
+                return redirect(poll_url)
+        else:
+            if requested_page == poll_url:
+                # user tries to access poll when uneligible
+                return redirect(results_url)
+
+        # redirection is not needed
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ResultsView(LoginRequiredMixin, PollRedirectorMixin, TemplateView):
 
     template_name = 'results.html'
 
+    def get_happiness_stats(self):
+        """
+        Returns breakdown on happines level and an average happiness as a tuple.
+        If the user is in some team, stats are calculated for this team only. In
+        the other case, stats are calculated for all users without a team.
+        """
+        try:
+            team_or_none = self.request.user.pollprofile.team
+        except ObjectDoesNotExist:
+            # if the user is without a profile - calculate stats for all users
+            # without a team
+            team_or_none = None
+
+        teammates = PollProfile.objects.filter(team=team_or_none)
+        average_happiness = teammates.aggregate(Avg('happiness'))['happiness__avg']
+        detailed_happiness = [teammates.filter(happiness=i).count() for i in range(1, 6)]
+        return (detailed_happiness, average_happiness, )
+
     def get_login_url(self):
         return reverse('teamstats:login_view')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        detailed, average = get_happiness_stats(self.request.user)
-        detailed = [{'label': CHOICES[x][1], 'value': detailed[x]} for x in range(5)]
+        detailed, average = self.get_happiness_stats()
+        detailed = [{'label': UserPollForm.HAPPINESS_CHOICES[x][1], 'value': detailed[x]} for x in range(5)]
         context['detailed'] = detailed
         context['average'] = average
         return context
