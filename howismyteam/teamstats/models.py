@@ -1,6 +1,6 @@
 from datetime import date
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
@@ -16,19 +16,15 @@ class Team(models.Model):
         return self.name
 
 
-class PollProfile(models.Model):
+class HappyTeamUser(AbstractUser):
     """
-    Represents user's poll profile. Each user should have a profile to be able
-    to participate in the poll.
+    Custom user with team and happiness level.
     """
-    # Each profile must point to a user, if the user is deleted, so is profile.
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
     # User may may have a team, team can be deleted, without deleting
     # user's profile.
     team = models.ForeignKey(
         Team,
         on_delete=models.SET_NULL,
-        related_name='teammates',
         null=True,
         blank=True
     )
@@ -50,11 +46,8 @@ class PollProfile(models.Model):
         Returns True if the user is eligible for poll (wasn't polled today).
         """
         # if happiness is not Null - user had voted before
-        if self.user.pollprofile.happiness:
+        if self.happiness:
             # check poll date
             return self.poll_date != date.today()
         # this is the very first poll
         return True
-
-    def __str__(self):
-        return self.user.username

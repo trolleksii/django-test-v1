@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block body_block %}
+<form id="id_register_form" action="{% url 'teamstats:register_view' %}?next={{ next }}" method="post">
+    {% csrf_token %}       
+    {{ form.as_p }}        
+    <button class="btn btn-default" id="id_do_register" type="submit">Register</button>
+</form>
+{% endblock %}

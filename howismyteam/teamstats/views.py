@@ -1,3 +1,4 @@
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.core.exceptions import ObjectDoesNotExist
@@ -5,13 +6,33 @@ from django.db.models import Avg
 from django.shortcuts import redirect, reverse
 from django.views.generic import TemplateView, UpdateView
 
-from .forms import UserPollForm
-from .models import PollProfile
+from .forms import HappyUserCreationForm, UserPollForm
+from .models import HappyTeamUser
 
 
 class IndexView(TemplateView):
 
     template_name = 'index.html'
+
+
+class UserRegistrationView(TemplateView):
+    template_name = 'register.html'
+
+    def post(self, request, *args, **kwargs):
+        form = HappyUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('teamstats:userpoll_view')
+        else:
+            return self.get(request, form=form)
+
+    def get(self, request, *args, **kwargs):
+        form = kwargs.pop('form', HappyUserCreationForm())
+        return super().get(request, form=form, *args, **kwargs)
 
 
 class UserLoginView(LoginView):
@@ -40,7 +61,7 @@ class PollRedirectorMixin:
         requested_page = request.path
 
         try:
-            eligibility = self.request.user.pollprofile.is_eligible_for_poll
+            eligibility = self.request.user.is_eligible_for_poll
         except ObjectDoesNotExist:
             eligibility = False
 
@@ -68,13 +89,11 @@ class ResultsView(LoginRequiredMixin, PollRedirectorMixin, TemplateView):
         the other case, stats are calculated for all users without a team.
         """
         try:
-            team_or_none = self.request.user.pollprofile.team
+            team_or_none = self.request.user.team
         except ObjectDoesNotExist:
-            # if the user is without a profile - calculate stats for all users
-            # without a team
             team_or_none = None
 
-        teammates = PollProfile.objects.filter(team=team_or_none)
+        teammates = HappyTeamUser.objects.filter(team=team_or_none)
         average_happiness = teammates.aggregate(Avg('happiness'))['happiness__avg']
         detailed_happiness = [teammates.filter(happiness=i).count() for i in range(1, 6)]
         return (detailed_happiness, average_happiness, )
@@ -103,4 +122,4 @@ class UserPollView(LoginRequiredMixin, PollRedirectorMixin, UpdateView):
         return reverse('teamstats:results_view')
 
     def get_object(self, queryset=None):
-        return self.request.user.pollprofile
+        return self.request.user
