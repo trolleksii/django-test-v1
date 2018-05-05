@@ -1,252 +1,210 @@
 [
 {
-  "model": "auth.user",
-  "pk": 1,
-  "fields": {
-    "password": "pbkdf2_sha256$100000$I4Zwm9iXfyZI$llj2Pik6KShb0EQiPbQDayKS2VQdZkXKNPVgNcppNoU=",
-    "last_login": "2018-01-21T20:27:47.734Z",
-    "is_superuser": true,
-    "username": "admin",
-    "first_name": "",
-    "last_name": "",
-    "email": "",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2018-01-21T20:27:19.960Z",
-    "groups": [],
-    "user_permissions": []
-  }
+    "model": "teamstats.team",
+    "pk": 1,
+    "fields": {
+        "name": "Red Team"
+    }
 },
 {
-  "model": "auth.user",
-  "pk": 2,
-  "fields": {
-    "password": "pbkdf2_sha256$100000$xgXV5VCL80YR$jTmszXYVW2FyPEf+/z0fEEI1N6JUEM5cowwPuTWFn6o=",
-    "last_login": null,
-    "is_superuser": false,
-    "username": "Stanley",
-    "first_name": "",
-    "last_name": "",
-    "email": "",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2018-01-21T20:29:18.825Z",
-    "groups": [],
-    "user_permissions": []
-  }
+    "model": "teamstats.team",
+    "pk": 2,
+    "fields": {
+        "name": "Blue Team"
+    }
 },
 {
-  "model": "auth.user",
-  "pk": 3,
-  "fields": {
-    "password": "pbkdf2_sha256$100000$duIqKEZwK841$7hd98WuKhRR8S0GLgzmbsBLPLZn/dau2p8Mo0i0/zyc=",
-    "last_login": null,
-    "is_superuser": false,
-    "username": "Kyle",
-    "first_name": "",
-    "last_name": "",
-    "email": "",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2018-01-21T20:29:29.290Z",
-    "groups": [],
-    "user_permissions": []
-  }
+    "model": "teamstats.happyteamuser",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$bwOsh6J46heZ$nCGfizmseQO5yxiHNWJTA+jpszhisKcGx1M/7pi56J4=",
+        "last_login": "2018-05-05T20:24:15.485Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2018-05-05T20:19:08.414Z",
+        "team": null,
+        "happiness": null,
+        "poll_date": "2018-05-05",
+        "groups": [],
+        "user_permissions": []
+    }
 },
 {
-  "model": "auth.user",
-  "pk": 4,
-  "fields": {
-    "password": "pbkdf2_sha256$100000$nmZphruDjDVT$QeCrq5sIxtLs07qSPoVPA+qadiG6u+FL43YuXtRFcds=",
-    "last_login": null,
-    "is_superuser": false,
-    "username": "Eric",
-    "first_name": "",
-    "last_name": "",
-    "email": "",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2018-01-21T20:29:40.659Z",
-    "groups": [],
-    "user_permissions": []
-  }
+    "model": "teamstats.happyteamuser",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$ZJ8VyPZLsoz3$4qdduwkqaesTkd0Ah9gTYT4w7uSoBtc9vreHdunxhgQ=",
+        "last_login": "2018-05-05T20:21:23.554Z",
+        "is_superuser": false,
+        "username": "Kenneth",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2018-05-05T20:21:22.535Z",
+        "team": 1,
+        "happiness": null,
+        "poll_date": "2018-05-05",
+        "groups": [],
+        "user_permissions": []
+    }
 },
 {
-  "model": "auth.user",
-  "pk": 5,
-  "fields": {
-    "password": "pbkdf2_sha256$100000$pLGbvZ5miSKG$+pSZt4UfIZd2Ltnw7gY87wDqFZZsiCpaqlTweAqQVUk=",
-    "last_login": null,
-    "is_superuser": false,
-    "username": "Kenneth",
-    "first_name": "",
-    "last_name": "",
-    "email": "",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2018-01-21T20:29:54.572Z",
-    "groups": [],
-    "user_permissions": []
-  }
+    "model": "teamstats.happyteamuser",
+    "pk": 4,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$81MRPijhjNyO$oIBCTwIxqgo/IKbAbMgmlLOh8C0vnYdp9Eyh+xYoaYM=",
+        "last_login": "2018-05-05T20:23:19.275Z",
+        "is_superuser": false,
+        "username": "Butters",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2018-05-05T20:23:18.536Z",
+        "team": 2,
+        "happiness": null,
+        "poll_date": "2018-05-05",
+        "groups": [],
+        "user_permissions": []
+    }
 },
 {
-  "model": "auth.user",
-  "pk": 6,
-  "fields": {
-    "password": "pbkdf2_sha256$100000$VScPUNaJsBS6$QaQkrP5z+IS443PaIxas54raqVhojxcQzJNIbaaFQRk=",
-    "last_login": null,
-    "is_superuser": false,
-    "username": "Timmy",
-    "first_name": "",
-    "last_name": "",
-    "email": "",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2018-01-21T20:30:32.728Z",
-    "groups": [],
-    "user_permissions": []
-  }
+    "model": "teamstats.happyteamuser",
+    "pk": 5,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$beyaC807JTcK$LkwQXgkblDNK4/Sj1sc3h1xxK7FnKvkjKycApyJK0i8=",
+        "last_login": "2018-05-05T20:23:48.849Z",
+        "is_superuser": false,
+        "username": "Stanley",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2018-05-05T20:23:48.046Z",
+        "team": 1,
+        "happiness": null,
+        "poll_date": "2018-05-05",
+        "groups": [],
+        "user_permissions": []
+    }
 },
 {
-  "model": "auth.user",
-  "pk": 7,
-  "fields": {
-    "password": "pbkdf2_sha256$100000$VGpKq3w34TsG$jPwea/uyGuclYXPYx1AXxTEFRc5QJctfMivM8gD1iqA=",
-    "last_login": null,
-    "is_superuser": false,
-    "username": "Jimmy",
-    "first_name": "",
-    "last_name": "",
-    "email": "",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2018-01-21T20:30:50.191Z",
-    "groups": [],
-    "user_permissions": []
-  }
+    "model": "teamstats.happyteamuser",
+    "pk": 6,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$VUK76yyqzaZq$Z5JDOWWrL+9M6PNabTIrOFG2Iv8qQy9vSJ+sAMs3gxU=",
+        "last_login": "2018-05-05T20:24:05.931Z",
+        "is_superuser": false,
+        "username": "Kyle",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2018-05-05T20:24:05.062Z",
+        "team": 1,
+        "happiness": null,
+        "poll_date": "2018-05-05",
+        "groups": [],
+        "user_permissions": []
+    }
 },
 {
-  "model": "auth.user",
-  "pk": 8,
-  "fields": {
-    "password": "pbkdf2_sha256$100000$y5teZlhddKMP$kPee+ANsx1S3ZmcNkazFZ4aTDK5UIt2iIPZwvRgKDSA=",
-    "last_login": null,
-    "is_superuser": false,
-    "username": "Butters",
-    "first_name": "",
-    "last_name": "",
-    "email": "",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2018-01-21T20:32:11.760Z",
-    "groups": [],
-    "user_permissions": []
-  }
+    "model": "teamstats.happyteamuser",
+    "pk": 7,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$yAPqoMfruBkM$6S0Ba/EfLsXWw3cJnIjD4KSOezw2C4cqescqBLHkvw4=",
+        "last_login": "2018-05-05T20:25:33.452Z",
+        "is_superuser": false,
+        "username": "Eric",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2018-05-05T20:25:32.552Z",
+        "team": 2,
+        "happiness": null,
+        "poll_date": "2018-05-05",
+        "groups": [],
+        "user_permissions": []
+    }
 },
 {
-  "model": "sessions.session",
-  "pk": "z6vqahejhz13jmi8urpq214erlwgp8er",
-  "fields": {
-    "session_data": "ZTMzNjUyY2M5MGUwMGUxNzljNTRjYzU2N2RmYjc2MWYxNWZjMGRmYzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJiYWJmN2EzYWQ5MDE0MjAzNTM1ZjVmZjMwZTNhNzIwMDBkMzJlOWU4In0=",
-    "expire_date": "2018-02-04T20:27:47.746Z"
-  }
+    "model": "teamstats.happyteamuser",
+    "pk": 8,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$9SrWMdb5MDWC$vEi6yJBvMyvPX8Jm7EjCwmYIktBocXm8WJOeJRhthMg=",
+        "last_login": "2018-05-05T20:25:49.546Z",
+        "is_superuser": false,
+        "username": "Timmy",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2018-05-05T20:25:48.760Z",
+        "team": null,
+        "happiness": null,
+        "poll_date": "2018-05-05",
+        "groups": [],
+        "user_permissions": []
+    }
 },
 {
-  "model": "teamstats.team",
-  "pk": 1,
-  "fields": {
-    "name": "Awesome Team"
-  }
+    "model": "teamstats.happyteamuser",
+    "pk": 9,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$Akod7Pos82QT$pORH/JzjXNTG/SMTJbz6pLGWAkFJCCGsTXvGL7bp618=",
+        "last_login": "2018-05-05T20:26:01.780Z",
+        "is_superuser": false,
+        "username": "Jimmy",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2018-05-05T20:26:00.947Z",
+        "team": null,
+        "happiness": null,
+        "poll_date": "2018-05-05",
+        "groups": [],
+        "user_permissions": []
+    }
 },
 {
-  "model": "teamstats.team",
-  "pk": 2,
-  "fields": {
-    "name": "Not So Awesome Team"
-  }
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+        "action_time": "2018-05-05T20:24:44.046Z",
+        "user": 1,
+        "content_type": 6,
+        "object_id": "3",
+        "object_repr": "Eric",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"password\"]}}]"
+    }
 },
 {
-  "model": "teamstats.pollprofile",
-  "pk": 1,
-  "fields": {
-    "user": [
-      "Eric"
-    ],
-    "team": 2,
-    "happiness": null,
-    "poll_date": "2018-02-09"
-  }
-},
-{
-  "model": "teamstats.pollprofile",
-  "pk": 2,
-  "fields": {
-    "user": [
-      "Stanley"
-    ],
-    "team": 1,
-    "happiness": null,
-    "poll_date": "2018-02-09"
-  }
-},
-{
-  "model": "teamstats.pollprofile",
-  "pk": 3,
-  "fields": {
-    "user": [
-      "Kyle"
-    ],
-    "team": 1,
-    "happiness": null,
-    "poll_date": "2018-02-09"
-  }
-},
-{
-  "model": "teamstats.pollprofile",
-  "pk": 4,
-  "fields": {
-    "user": [
-      "Kenneth"
-    ],
-    "team": 1,
-    "happiness": null,
-    "poll_date": "2018-02-09"
-  }
-},
-{
-  "model": "teamstats.pollprofile",
-  "pk": 5,
-  "fields": {
-    "user": [
-      "Butters"
-    ],
-    "team": 2,
-    "happiness": null,
-    "poll_date": "2018-02-09"
-  }
-},
-{
-  "model": "teamstats.pollprofile",
-  "pk": 6,
-  "fields": {
-    "user": [
-      "Jimmy"
-    ],
-    "team": null,
-    "happiness": null,
-    "poll_date": "2018-02-09"
-  }
-},
-{
-  "model": "teamstats.pollprofile",
-  "pk": 7,
-  "fields": {
-    "user": [
-      "Timmy"
-    ],
-    "team": null,
-    "happiness": null,
-    "poll_date": "2018-02-09"
-  }
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+        "action_time": "2018-05-05T20:25:13.644Z",
+        "user": 1,
+        "content_type": 6,
+        "object_id": "3",
+        "object_repr": "Eric",
+        "action_flag": 3,
+        "change_message": ""
+    }
 }
 ]

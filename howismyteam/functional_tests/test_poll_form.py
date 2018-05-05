@@ -100,3 +100,23 @@ class GeneralUsabilityTest(FunctionalTests):
         self.browser.find_element_by_id('id_do_login').send_keys(Keys.ENTER)
         self.wait_for(lambda: self.browser.find_element_by_id('id_results_table'))
         self.browser.find_element_by_id('id_nav_admin')
+
+    def test_register_vote_results(self):
+        self.browser.get(self.live_server_url)
+        # logging in
+        self.browser.find_element_by_id('id_main_register').click()
+        self.wait_for(lambda: self.browser.find_element_by_id('id_register_form'))
+        self.browser.find_element_by_id('id_username').send_keys('Kenneth')
+        self.browser.find_element_by_id('id_password1').send_keys('qwerty123')
+        self.browser.find_element_by_id('id_password2').send_keys('qwerty123')
+        self.browser.find_element_by_id('id_do_register').click()
+        self.wait_for(lambda: self.browser.find_element_by_id('id_happiness'))
+        # participate in poll
+        self.browser.find_element_by_id('id_happiness_4').send_keys(Keys.SPACE)
+        self.browser.find_element_by_id('id_poll_select').send_keys(Keys.ENTER)
+        self.wait_for(lambda: self.browser.find_element_by_id('id_results_table'))
+        # logging out
+        self.browser.find_element_by_id('id_nav_logout').click()
+        # check if log out button disappeared
+        with self.assertRaises(NoSuchElementException):
+            self.browser.find_element_by_id('id_nav_logout')

@@ -2,7 +2,7 @@ from datetime import date
 from django.test import TestCase
 from django.urls import reverse
 
-from teamstats.models import User
+from teamstats.models import HappyTeamUser
 
 
 class TestWithFixtures(TestCase):
@@ -15,6 +15,36 @@ class IndexViewTest(TestWithFixtures):
     def test_index_view_use_correct_template(self):
         response = self.client.get(reverse('index_view'))
         self.assertTemplateUsed(response, 'index.html')
+
+
+class RegistrationViewTest(TestCase):
+
+    def test_view_uses_correct_template(self):
+        response = self.client.get(reverse('teamstats:register_view'))
+        self.assertTemplateUsed(response, 'register.html')
+
+    def test_successfull_registration_redirects_to_poll(self):
+        response = self.client.post(
+            reverse('teamstats:register_view'),
+            data={
+                'username': 'testuser',
+                'password1': 'qwerty123',
+                'password2': 'qwerty123'
+            }
+        )
+        self.assertRedirects(response, reverse('teamstats:userpoll_view'))
+
+    def test_unvalid_form(self):
+        response = self.client.post(
+            reverse('teamstats:register_view'),
+            data={
+                'username': 'testuser',
+                'password1': 'qwerty123',
+                'password2': 'qwerty124'
+            },
+            follow=True
+        )
+        self.assertTemplateUsed(response, 'register.html')
 
 
 class LoginViewTest(TestWithFixtures):
@@ -40,9 +70,9 @@ class LoginViewTest(TestWithFixtures):
         self.assertRedirects(response, reverse('teamstats:userpoll_view'))
 
     def test_successfull_login_redirects_to_results(self):
-        profile = User.objects.get(username='Kenneth').pollprofile
-        profile.happiness = 5
-        profile.save()
+        user = HappyTeamUser.objects.get(username='Kenneth')
+        user.happiness = 5
+        user.save()
         response = self.client.post(
             reverse('teamstats:login_view'),
             data={'username': 'Kenneth', 'password': 'qwerty123'}, follow=True
@@ -102,9 +132,9 @@ class PollViewTest(TestWithFixtures):
             reverse('teamstats:userpoll_view'),
             data={'happiness': 1}
         )
-        profile = User.objects.get(username='Kenneth').pollprofile
-        self.assertEqual(profile.happiness, 1)
-        self.assertEqual(profile.poll_date, date.today())
+        user = HappyTeamUser.objects.get(username='Kenneth')
+        self.assertEqual(user.happiness, 1)
+        self.assertEqual(user.poll_date, date.today())
 
     def test_successfull_poll_redirects_to_results(self):
         self.client.login(username='Kenneth', password='qwerty123')
@@ -121,18 +151,18 @@ class PollViewTest(TestWithFixtures):
             reverse('teamstats:userpoll_view'),
             data={'happiness': 3}
         )
-        profile = User.objects.get(username='Kenneth').pollprofile
+        user = HappyTeamUser.objects.get(username='Kenneth')
         # happiness=3 saved to DB
-        self.assertEqual(profile.happiness, 3)
+        self.assertEqual(user.happiness, 3)
         # sending another post happiness=1
         self.client.post(
             reverse('teamstats:userpoll_view'),
             data={'happiness': 1}, follow=True
         )
         # happiness=1 wasn't saved to DB
-        self.assertNotEqual(profile.happiness, 1)
+        self.assertNotEqual(user.happiness, 1)
         # happiness is still 3
-        self.assertEqual(profile.happiness, 3)
+        self.assertEqual(user.happiness, 3)
 
     def test_user_cant_be_polled_without_data(self):
         self.client.login(username='Kenneth', password='qwerty123')
