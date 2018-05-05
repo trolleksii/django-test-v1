@@ -2,6 +2,7 @@
 {% block body_block %}
 <div class="jumbotron">
     <h1>Welcome to the TeamStats Project!</h1>
+    <p>A simple Django application to allow daily checkins and monitoring of your teams happiness.</p>
     {% if user.is_authenticated %}
     <a class="btn btn-default btn-lg" id="id_main_results" role="button" href="{% url 'teamstats:results_view' %}">View Stats</a></h2>
     {% else %}
