@@ -45,6 +45,9 @@ class HappyTeamUser(AbstractUser):
         """
         Returns True if the user is eligible for poll (wasn't polled today).
         """
+        # admins can't vote
+        if self.is_staff:
+            return False
         # if happiness is not Null - user had voted before
         if self.happiness:
             # check poll date
