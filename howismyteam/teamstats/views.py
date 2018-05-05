@@ -60,12 +60,7 @@ class PollRedirectorMixin:
         poll_url = reverse('teamstats:userpoll_view')
         requested_page = request.path
 
-        try:
-            eligibility = self.request.user.is_eligible_for_poll
-        except ObjectDoesNotExist:
-            eligibility = False
-
-        if eligibility:
+        if self.request.user.is_eligible_for_poll:
             if requested_page == results_url:
                 # user is eligible for poll but tries to access results
                 return redirect(poll_url)
@@ -88,11 +83,7 @@ class ResultsView(LoginRequiredMixin, PollRedirectorMixin, TemplateView):
         If the user is in some team, stats are calculated for this team only. In
         the other case, stats are calculated for all users without a team.
         """
-        try:
-            team_or_none = self.request.user.team
-        except ObjectDoesNotExist:
-            team_or_none = None
-
+        team_or_none = self.request.user.team
         teammates = HappyTeamUser.objects.filter(team=team_or_none)
         average_happiness = teammates.aggregate(Avg('happiness'))['happiness__avg']
         detailed_happiness = [teammates.filter(happiness=i).count() for i in range(1, 6)]
