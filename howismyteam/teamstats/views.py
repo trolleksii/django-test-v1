@@ -1,7 +1,6 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
-from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Avg
 from django.shortcuts import redirect, reverse
 from django.views.generic import TemplateView, UpdateView
@@ -27,8 +26,7 @@ class UserRegistrationView(TemplateView):
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect('teamstats:userpoll_view')
-        else:
-            return self.get(request, form=form)
+        return self.get(request, form=form)
 
     def get(self, request, *args, **kwargs):
         form = kwargs.pop('form', HappyUserCreationForm())
